@@ -1,0 +1,88 @@
+# =============================================================================
+# LibreLane 3.0.16 -- pixi environment
+# =============================================================================
+#
+# Runs LibreLane (https://github.com/librelane/librelane) pinned to the exact
+# open-source EDA tool versions that upstream LibreLane 3.0.16 ships with.
+#
+# LibreLane itself and its Python dependencies come from PyPI (pixi's native
+# PyPI support). Note: `conda-pypi` on anaconda.org is conda's PyPI-backed
+# channel for *conda*, which pixi cannot consume (it has no repodata); the pixi
+# equivalent is `[pypi-dependencies]`.
+#
+# EDA tools are taken at their exact upstream commits from the community
+# `unic-cass` / `duyhieu` conda channels:
+#   openroad 2.0_28825_gdcf36133a3   (=> `sta` 2.7.0 as well)
+#   yosys 0.62_0_g7326bb7d6
+#   klayout 0.30.7_0_g6dd3e6b10
+#   magic 8.3.623_0_gfd12c39c
+#   netgen 1.5.316_0_gb76c9a1
+#   verilator 5.044_0_g8df584ca1
+#   iverilog 0_8_7207_gdb82380ce
+#
+# Anaconda `defaults` supplies the *non-EDA* runtime libraries that the
+# prebuilt EDA packages request (icu/cairo/qt, libffi 3.4.8, tk 8.6.15). Their
+# exact version does not matter -- see README.md.
+#
+# The exact tool versions were read from the official
+# `ghcr.io/librelane/librelane:3.0.16` image and the repo's flake.lock / nix/.
+#
+# Usage:
+#   pixi install
+#   pixi run librelane --version
+#   pixi run smoke-test
+# =============================================================================
+
+[workspace]
+name = "librelane"
+description = "LibreLane 3.0.16 with its exact pinned open-source EDA toolchain"
+channels = [
+    "conda-forge",
+    # Anaconda defaults: ABI-consistent C/C++ runtime for the prebuilt EDA tools.
+    "https://repo.anaconda.com/pkgs/main",
+    # Exact-version EDA tool builds.
+    "https://conda.anaconda.org/unic-cass",
+    "https://conda.anaconda.org/duyhieu",
+]
+platforms = ["linux-64"]
+# conda-forge also carries e.g. `yosys`/`magic`/`cairo` at different versions,
+# so channel priority must not shadow the exact builds below.
+channel-priority = "disabled"
+
+# The KLayout conda package installs its Python bindings into
+# $PREFIX/lib/pymod instead of site-packages. Putting it on PYTHONPATH makes
+# the exact conda KLayout bindings win over the PyPI `klayout` wheel that comes
+# in as a dependency of PyPI `librelane`.
+[activation.env]
+PYTHONPATH = "$CONDA_PREFIX/lib/pymod"
+
+[dependencies]
+python = "3.12.*"
+
+# This machine exports `all_proxy=socks5://...`; httpx (used by ciel/LibreLane)
+# needs socksio to speak SOCKS. Harmless otherwise.
+socksio = "*"
+
+# ---------------------------------------------------------------------------
+# EDA tools -- EXACT pinned versions (these matter for reproducibility)
+# ---------------------------------------------------------------------------
+openroad  = { version = "==2.0_28825_gdcf36133a3", channel = "https://conda.anaconda.org/duyhieu" }   # OpenROAD @ dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 (2026-02-17)
+yosys     = { version = "==0.62_0_g7326bb7d6",     channel = "https://conda.anaconda.org/unic-cass" }  # Yosys 0.62 @ 7326bb7d6
+klayout   = { version = "==0.30.7_0_g6dd3e6b10",   channel = "https://conda.anaconda.org/unic-cass" }  # KLayout 0.30.7
+magic     = { version = "==8.3.623_0_gfd12c39c",   channel = "https://conda.anaconda.org/unic-cass" }  # Magic 8.3.623 @ fd12c39c
+netgen    = { version = "==1.5.316_0_gb76c9a1",    channel = "https://conda.anaconda.org/unic-cass" }  # Netgen (LVS) 1.5.316 @ b76c9a1
+verilator = { version = "==5.044_0_g8df584ca1",    channel = "https://conda.anaconda.org/unic-cass" }  # Verilator 5.044 @ 8df584ca1
+iverilog  = { version = "==0_8_7207_gdb82380ce",   channel = "https://conda.anaconda.org/duyhieu" }    # Icarus Verilog @ db82380ce
+# OpenSTA 2.7.0 is provided as the `sta` binary by the OpenROAD package above.
+
+[pypi-dependencies]
+# LibreLane itself (pure Python). Pulls ciel / lln-libparse / yamlcore too.
+librelane = "==3.0.16"
+# Pin the PyPI KLayout bindings to the exact conda KLayout version. They are
+# shadowed by the conda bindings via PYTHONPATH above, but this avoids a
+# spurious 0.30.12 alongside the exact 0.30.7.
+klayout = "==0.30.7"
+
+[tasks]
+version    = "librelane --version"
+smoke-test = "librelane --smoke-test"

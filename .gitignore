@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# pixi
+# ---------------------------------------------------------------------------
+# Locally installed environment. Recreate it with `pixi install`.
+/.pixi/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.mypy_cache/
+
+# ---------------------------------------------------------------------------
+# conda / mamba build artifacts
+# ---------------------------------------------------------------------------
+*.conda
+*.tar.bz2
+.pkgs/
+conda-meta/
+
+# ---------------------------------------------------------------------------
+# Logs / smoke-test output
+# ---------------------------------------------------------------------------
+*.log
+smoke-test*
+smoke*.log
+
+# ---------------------------------------------------------------------------
+# Editors / OS
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# NOTE: pixi.toml, pixi.lock and README.md are intentionally NOT ignored --
+# they are the reproducible definition of this environment and must be
+# committed.
