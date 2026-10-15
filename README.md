@@ -9,7 +9,7 @@ open-source EDA tool versions that upstream LibreLane 3.0.16 ships with.
 | what | where | how |
 |------|-------|-----|
 | LibreLane + its Python deps (`ciel`, `lln-libparse`, `yamlcore`, ...) | **PyPI** (`[pypi-dependencies]`) | prebuilt wheels, no build step |
-| EDA tools | **`unic-cass` / `duyhieu`** conda channels | exact pinned commits |
+| EDA tools | **`unic-cass`** conda channel (the conda-opensource-eda project) | exact pinned commits |
 | non-EDA runtime libs (`libffi 3.4.8`, `tk 8.6.15`, `cairo`/`icu`/`qt`) | **Anaconda `defaults`** | solver metadata only, irrelevant versions |
 
 The EDA tools are the only thing that needs exactness; everything Python comes
@@ -36,10 +36,21 @@ pixi run smoke-test       # full RTL -> GDS smoke test (downloads sky130A)
 | Magic          | `8.3.623_0_gfd12c39c`         | 8.3.623 @ `fd12c39c`                                    |
 | Netgen (LVS)   | `1.5.316_0_gb76c9a1`          | 1.5.316 @ `b76c9a1`                                     |
 | Verilator      | `5.044_0_g8df584ca1`          | 5.044 @ `8df584ca1`                                     |
-| Icarus Verilog | `0_8_7207_gdb82380ce`         | `db82380ce` (13.0 devel)                                |
+| Icarus Verilog | `0_8_7223_g437256029`      | newest available; commit is irrelevant (see below) |
 
 These match the `ghcr.io/librelane/librelane:3.0.16` image on version
 (`librelane --smoke-test` passes).
+
+### About the Icarus Verilog version
+
+Upstream 3.0.16 pins Icarus `db82380ce`, which is not published on
+`unic-cass`. That does not matter, because LibreLane uses `iverilog` in exactly
+one place: `steps/yosys.py`, inside `Yosys.EQY`, as a pure preprocessor
+(`iverilog -E ... -DFUNCTIONAL`) to expand cell Verilog models. That branch is
+gated by `RUN_EQY` (default `False`) and `EQY_FORCE_ACCEPT_PDK`, and the step
+additionally needs `eqy`/`sby`, which are not installed. It is never used in
+the default flow (the smoke test never invokes it). So the closest available
+`unic-cass` build is used instead of adding a personal channel.
 
 ## The PyPI KLayout wheel
 
@@ -60,7 +71,7 @@ wheel is not pure Python).
 
 ## Why Anaconda `defaults`?
 
-The `unic-cass` / `duyhieu` EDA packages were built against Anaconda's C++
+The `unic-cass` EDA packages were built against Anaconda's C++
 runtime, and their conda metadata reflects that:
 
 * `magic` -> `cairo >=1.18.4` -> `icu >=75.1`

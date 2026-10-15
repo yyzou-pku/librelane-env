@@ -11,7 +11,8 @@
 # equivalent is `[pypi-dependencies]`.
 #
 # EDA tools are taken at their exact upstream commits from the community
-# `unic-cass` / `duyhieu` conda channels:
+# `unic-cass` conda channel (the conda-opensource-eda project). The exact
+# OpenROAD commit lives under the `ci-master-27377866119` label.
 #   openroad 2.0_28825_gdcf36133a3   (=> `sta` 2.7.0 as well)
 #   yosys 0.62_0_g7326bb7d6
 #   klayout 0.30.7_0_g6dd3e6b10
@@ -40,9 +41,10 @@ channels = [
     "conda-forge",
     # Anaconda defaults: ABI-consistent C/C++ runtime for the prebuilt EDA tools.
     "https://repo.anaconda.com/pkgs/main",
-    # Exact-version EDA tool builds.
+    # Exact-version EDA tool builds (conda-opensource-eda project).
     "https://conda.anaconda.org/unic-cass",
-    "https://conda.anaconda.org/duyhieu",
+    # The exact OpenROAD commit is only published under this CI label.
+    "https://conda.anaconda.org/unic-cass/label/ci-master-27377866119",
 ]
 platforms = ["linux-64"]
 # conda-forge also carries e.g. `yosys`/`magic`/`cairo` at different versions,
@@ -66,13 +68,13 @@ socksio = "*"
 # ---------------------------------------------------------------------------
 # EDA tools -- EXACT pinned versions (these matter for reproducibility)
 # ---------------------------------------------------------------------------
-openroad  = { version = "==2.0_28825_gdcf36133a3", channel = "https://conda.anaconda.org/duyhieu" }   # OpenROAD @ dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 (2026-02-17)
+openroad  = { version = "==2.0_28825_gdcf36133a3", channel = "https://conda.anaconda.org/unic-cass/label/ci-master-27377866119" }   # OpenROAD @ dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 (2026-02-17)
 yosys     = { version = "==0.62_0_g7326bb7d6",     channel = "https://conda.anaconda.org/unic-cass" }  # Yosys 0.62 @ 7326bb7d6
 klayout   = { version = "==0.30.7_0_g6dd3e6b10",   channel = "https://conda.anaconda.org/unic-cass" }  # KLayout 0.30.7
 magic     = { version = "==8.3.623_0_gfd12c39c",   channel = "https://conda.anaconda.org/unic-cass" }  # Magic 8.3.623 @ fd12c39c
 netgen    = { version = "==1.5.316_0_gb76c9a1",    channel = "https://conda.anaconda.org/unic-cass" }  # Netgen (LVS) 1.5.316 @ b76c9a1
 verilator = { version = "==5.044_0_g8df584ca1",    channel = "https://conda.anaconda.org/unic-cass" }  # Verilator 5.044 @ 8df584ca1
-iverilog  = { version = "==0_8_7207_gdb82380ce",   channel = "https://conda.anaconda.org/duyhieu" }    # Icarus Verilog @ db82380ce
+iverilog  = { version = "==0_8_7223_g437256029",   channel = "https://conda.anaconda.org/unic-cass" }  # Icarus Verilog -- only used by the opt-in Yosys.EQY step (see README)
 # OpenSTA 2.7.0 is provided as the `sta` binary by the OpenROAD package above.
 
 [pypi-dependencies]
