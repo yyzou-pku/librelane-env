@@ -43,7 +43,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/gxx_linux-64-16.2.0-h23aca61_2.conda
       - conda: https://repo.anaconda.com/pkgs/main/linux-64/harfbuzz-10.2.0-hdfddeaa_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/icu-73.2-h59595ed_0.conda
-      - conda: https://conda.anaconda.org/unic-cass/linux-64/iverilog-0_8_7223_g437256029-20251012_104407.conda
+      - conda: https://conda.anaconda.org/unic-cass/label/ci-master-27377866119/linux-64/iverilog-0_8_7517_gde415b2f0-20260611_211420.conda
       - conda: https://repo.anaconda.com/pkgs/main/linux-64/jpeg-9f-he7e78df_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/kernel-headers_linux-64-4.18.0-he073ed8_9.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/keyutils-1.6.3-h7cc23a3_1.conda
@@ -653,16 +653,16 @@ packages:
   - hypothesis>=6.141.1 ; extra == 'all'
   - coverage>=7.10.0 ; extra == 'all'
   requires_python: '>=3.9'
-- conda: https://conda.anaconda.org/unic-cass/linux-64/iverilog-0_8_7223_g437256029-20251012_104407.conda
-  build_number: 20251012104407
-  sha256: 5984181e01366bd2431fb0e69e1f0fc04e0d90b13ad40abcace93ef5f319d022
-  md5: 01c0482d2d4fdcda507c5876ad962e75
+- conda: https://conda.anaconda.org/unic-cass/label/ci-master-27377866119/linux-64/iverilog-0_8_7517_gde415b2f0-20260611_211420.conda
+  build_number: 20260611211420
+  sha256: c6dff5b260e1f30e7ea105588dfa798e8a17e3fe652dc734ae6ce02dc9b4205b
+  md5: 15bedc7633f6fd50830d7d939ef180fc
   depends:
-  - libgcc-ng >=11.2.0
-  - libstdcxx-ng >=11.2.0
+  - libgcc >=15
+  - libstdcxx >=15
   license: GPLv2
-  size: 2256015
-  timestamp: 1760266095389
+  size: 2359851
+  timestamp: 1781212714212
 - conda: https://repo.anaconda.com/pkgs/main/linux-64/jpeg-9f-he7e78df_1.conda
   sha256: 0cc3bc4f9e6f65ea460d8be4b2704439e817739d57c4c91e10e11184131e67f6
   md5: 977a65f832f83c8ddfaba1c9dbae389a

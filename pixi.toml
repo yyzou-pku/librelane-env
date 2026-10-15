@@ -74,7 +74,7 @@ klayout   = { version = "==0.30.7_0_g6dd3e6b10",   channel = "https://conda.anac
 magic     = { version = "==8.3.623_0_gfd12c39c",   channel = "https://conda.anaconda.org/unic-cass" }  # Magic 8.3.623 @ fd12c39c
 netgen    = { version = "==1.5.316_0_gb76c9a1",    channel = "https://conda.anaconda.org/unic-cass" }  # Netgen (LVS) 1.5.316 @ b76c9a1
 verilator = { version = "==5.044_0_g8df584ca1",    channel = "https://conda.anaconda.org/unic-cass" }  # Verilator 5.044 @ 8df584ca1
-iverilog  = { version = "==0_8_7223_g437256029",   channel = "https://conda.anaconda.org/unic-cass" }  # Icarus Verilog -- only used by the opt-in Yosys.EQY step (see README)
+iverilog  = { version = "==0_8_7517_gde415b2f0",   channel = "https://conda.anaconda.org/unic-cass/label/ci-master-27377866119" }  # Icarus Verilog (2026-06 devel, newest packaged; only used by opt-in Yosys.EQY)
 # OpenSTA 2.7.0 is provided as the `sta` binary by the OpenROAD package above.
 
 [pypi-dependencies]

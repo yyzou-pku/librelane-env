@@ -36,21 +36,24 @@ pixi run smoke-test       # full RTL -> GDS smoke test (downloads sky130A)
 | Magic          | `8.3.623_0_gfd12c39c`         | 8.3.623 @ `fd12c39c`                                    |
 | Netgen (LVS)   | `1.5.316_0_gb76c9a1`          | 1.5.316 @ `b76c9a1`                                     |
 | Verilator      | `5.044_0_g8df584ca1`          | 5.044 @ `8df584ca1`                                     |
-| Icarus Verilog | `0_8_7223_g437256029`      | newest available; commit is irrelevant (see below) |
+| Icarus Verilog | `0_8_7517_gde415b2f0`      | **14.0 devel**, 2026-06-06 (newest packaged)             |
 
 These match the `ghcr.io/librelane/librelane:3.0.16` image on version
 (`librelane --smoke-test` passes).
 
 ### About the Icarus Verilog version
 
-Upstream 3.0.16 pins Icarus `db82380ce`, which is not published on
-`unic-cass`. That does not matter, because LibreLane uses `iverilog` in exactly
-one place: `steps/yosys.py`, inside `Yosys.EQY`, as a pure preprocessor
+This env deliberately uses the **newest packaged** Icarus build
+(`0_8_7517_gde415b2f0`, i.e. 14.0 devel, 2026-06-06) rather than the older
+commit upstream 3.0.16 pins (`db82380ce`, 2025-01-03). Note the `0_8` prefix is
+just iverilog's `git describe` base tag; the binary reports `14.0 (devel)`.
+
+It does not matter either way: LibreLane uses `iverilog` in exactly one place
+(`steps/yosys.py`, inside `Yosys.EQY`) as a pure preprocessor
 (`iverilog -E ... -DFUNCTIONAL`) to expand cell Verilog models. That branch is
 gated by `RUN_EQY` (default `False`) and `EQY_FORCE_ACCEPT_PDK`, and the step
-additionally needs `eqy`/`sby`, which are not installed. It is never used in
-the default flow (the smoke test never invokes it). So the closest available
-`unic-cass` build is used instead of adding a personal channel.
+additionally needs `eqy`/`sby`, which are not installed. It is never used in the
+default flow (the smoke test never invokes it).
 
 ## The PyPI KLayout wheel
 
